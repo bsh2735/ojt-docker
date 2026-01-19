@@ -2,14 +2,6 @@ pipeline {
     agent any
 
     stages {
-
-        stage('Checkout') {
-            steps {
-                git branch: 'develop',
-                    url: 'https://your-gitea-or-github-url.git'
-            }
-        }
-
         stage('Build Docker Images') {
             steps {
                 sh 'docker compose build'
