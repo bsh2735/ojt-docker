@@ -8,9 +8,11 @@ pipeline {
             }
         }
 
-        stage('Stop Existing Containers') {
+        stage('Clean Existing Containers') {
             steps {
-                bat 'docker compose down'
+                bat '''
+                docker rm -f postgres backend frontend 2>NUL || exit 0
+                '''
             }
         }
 
