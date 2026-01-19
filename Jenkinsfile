@@ -4,19 +4,19 @@ pipeline {
     stages {
         stage('Build Docker Images') {
             steps {
-                sh 'docker compose build'
+                bat 'docker compose build'
             }
         }
 
         stage('Stop Existing Containers') {
             steps {
-                sh 'docker compose down'
+                bat 'docker compose down'
             }
         }
 
         stage('Run Containers') {
             steps {
-                sh 'docker compose up -d'
+                bat 'docker compose up -d'
             }
         }
     }
