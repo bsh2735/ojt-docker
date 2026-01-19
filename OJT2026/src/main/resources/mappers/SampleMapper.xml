@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.ojt2026.mapper.SampleMapper">
+
+    <select id="selectWavusList" resultType="com.example.ojt2026.dto.SampleDTO$SampleVO">
+        SELECT id, name, email, create_at AS createAt
+        FROM wavus
+        ORDER BY id
+    </select>
+
+    <select id="selectWavusById" parameterType="int" resultType="com.example.ojt2026.dto.SampleDTO$SampleVO">
+        SELECT id, name, email, create_at AS createAt
+        FROM wavus
+        WHERE id = #{id}
+    </select>
+
+    <select id="searchWavus" parameterType="map"
+            resultType="com.example.ojt2026.dto.SampleDTO$SampleVO">
+        SELECT id, name, email, create_at AS createAt
+        FROM wavus
+        <where>
+
+            <if test="keyword != null and keyword != ''">
+                <choose>
+                    <when test="type == 'name'">
+                        AND name LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'email'">
+                        AND email LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
+
+            <if test="startDate != null and startDate != ''">
+                AND create_at <![CDATA[ >= ]]> #{startDate}
+            </if>
+
+            <if test="endDate != null and endDate != ''">
+                AND create_at <![CDATA[ <= ]]> #{endDate}
+            </if>
+
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <insert id="insertWavus" parameterType="map">
+        INSERT INTO wavus (name, email)
+        VALUES (#{name}, #{email})
+    </insert>
+
+    <update id="updateWavusEmail" parameterType="map">
+        UPDATE wavus
+        SET email = #{email}
+        WHERE name = #{name}
+    </update>
+
+    <delete id="deleteWavus" parameterType="int">
+        DELETE FROM wavus
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
